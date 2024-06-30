@@ -7,8 +7,8 @@ Why such a Lodash hater? [Read my rant here](https://docs.cute.engineer/Opinion/
 ### Local Setup
 
 Install [Nix](https://nix.dev/install-nix) and [nix-direnv](https://github.com/nix-community/nix-direnv), then:
-```shell
-direnv allow
-npm install
+```sh
+$ direnv allow
+$ npm install
 ```
 
