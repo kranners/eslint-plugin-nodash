@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "description": "ESLint plugin for identifying unnecessary usages of Lodash",
   "main": "index.js",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
   "scripts": {
     "test": "jest"
   },
@@ -15,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kranners/eslint-plugin-nodash/issues"
   },
-  "homepage": "https://github.com/kranners/eslint-plugin-nodash#readme"
+  "homepage": "https://github.com/kranners/eslint-plugin-nodash#readme",
+  "peerDependencies": {
+    "eslint": "^9.6.0"
+  }
 }
