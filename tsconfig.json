@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    // "rootDir": "./",
+    // "baseUrl": "./",
+    // "paths": {},
+    // "types": [],
+    // "declarationMap": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "useUnknownInCatchVariables": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": false
+  }
+}

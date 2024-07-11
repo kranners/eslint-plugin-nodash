@@ -1,9 +1,8 @@
 {
   "name": "eslint-plugin-nodash",
-  "type": "module",
   "version": "0.0.0",
   "description": "ESLint plugin for identifying unnecessary usages of Lodash",
-  "exports": "./index.js",
+  "main": "./dist/index.js",
   "engines": "node>=18",
   "keywords": [
     "eslint",
@@ -11,7 +10,9 @@
     "eslint-plugin"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint",
+    "compile": "tsc"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,17 @@
   "homepage": "https://github.com/kranners/eslint-plugin-nodash#readme",
   "peerDependencies": {
     "eslint": "^9.6.0"
+  },
+  "overrides": {
+    "eslint": "^9.6.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.2",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.16.0"
   }
 }
