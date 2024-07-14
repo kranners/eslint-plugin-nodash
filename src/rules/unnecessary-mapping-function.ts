@@ -17,6 +17,8 @@ export const rule = createRule({
     messages: {
       avoidMapping: "Avoid using lodash mapping functions with existing equivalents"
     },
+    hasSuggestions: true,
+    fixable: "code",
   },
   defaultOptions: [],
   create(context) {
@@ -65,6 +67,12 @@ export const rule = createRule({
             node,
             messageId: "avoidMapping",
             data: { name },
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                [node.range[0], callback.range[0]],
+                `${array.name}.${name}(`
+              )
+            }
           });
         })
       }

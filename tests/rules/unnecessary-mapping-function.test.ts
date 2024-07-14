@@ -43,7 +43,13 @@ ruleTester.run('unnecessary-mapping-function', rule, {
           messageId: 'avoidMapping',
           data: { name: 'map' },
         }
-      ]
+      ],
+      output: `
+        import { map } from 'lodash';
+
+        const fruits = ['apple', 'banana', 'orange'];
+        const capitalFruits = fruits.map(fruit => fruit.toUpperCase());
+      `
     }
   ]
 })
