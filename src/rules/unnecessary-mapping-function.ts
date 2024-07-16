@@ -1,9 +1,6 @@
-import { ASTUtils, ESLintUtils } from "@typescript-eslint/utils";
+import { ASTUtils } from "@typescript-eslint/utils";
 import { ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
-
-const createRule = ESLintUtils.RuleCreator(
-  name => `eslint-plugin-nodash/${name}`
-)
+import { createRule } from ".";
 
 export const rule = createRule({
   name: "unnecessary-mapping-function",
