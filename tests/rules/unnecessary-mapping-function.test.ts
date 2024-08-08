@@ -53,6 +53,26 @@ ruleTester.run('unnecessary-mapping-function', rule, {
     },
     {
       code: `
+        import _ from 'lodash';
+
+        const fruits = ['apple', 'banana', 'orange'];
+        const capitalFruits = _.map(fruits, fruit => fruit.toUpperCase());
+      `,
+      errors: [
+        {
+          messageId: 'avoidMapping',
+          data: { name: 'map' },
+        }
+      ],
+      output: `
+        import _ from 'lodash';
+
+        const fruits = ['apple', 'banana', 'orange'];
+        const capitalFruits = fruits.map(fruit => fruit.toUpperCase());
+      `
+    },
+    {
+      code: `
         import { filter } from 'lodash';
 
         const fruits = ['apple', 'banana', 'orange'];
@@ -66,6 +86,26 @@ ruleTester.run('unnecessary-mapping-function', rule, {
       ],
       output: `
         import { filter } from 'lodash';
+
+        const fruits = ['apple', 'banana', 'orange'];
+        const fruitsWithLetterA = fruits.filter(fruit => fruit.includes('a'));
+      `
+    },
+    {
+      code: `
+        import _ from 'lodash';
+
+        const fruits = ['apple', 'banana', 'orange'];
+        const fruitsWithLetterA = _.filter(fruits, fruit => fruit.includes('a'));
+      `,
+      errors: [
+        {
+          messageId: 'avoidMapping',
+          data: { name: 'map' },
+        }
+      ],
+      output: `
+        import _ from 'lodash';
 
         const fruits = ['apple', 'banana', 'orange'];
         const fruitsWithLetterA = fruits.filter(fruit => fruit.includes('a'));

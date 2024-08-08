@@ -10,7 +10,7 @@
     "eslint-plugin"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "lint": "eslint",
     "compile": "tsc"
   },
