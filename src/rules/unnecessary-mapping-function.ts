@@ -1,21 +1,10 @@
-import { AST_NODE_TYPES, ASTUtils, TSESTree } from "@typescript-eslint/utils";
+import { ASTUtils } from "@typescript-eslint/utils";
 import { ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
 import { createRule } from ".";
 import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
-
-type Expression = TSESTree.Expression;
-type Identifier = TSESTree.Identifier;
-type MemberExpression = TSESTree.MemberExpression;
-type CallExpression = TSESTree.CallExpression;
-type FunctionExpression = TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
+import { CallExpression, FunctionExpression, Identifier, isValidCallee, MemberExpression } from "../lib/type-guards";
 
 type Context = RuleContext<"avoidMapping", []>;
-
-const isMemberExpression = ASTUtils.isNodeOfType(AST_NODE_TYPES.MemberExpression);
-
-const isValidCallee = (callee: Expression): callee is Identifier | MemberExpression => {
-  return ASTUtils.isIdentifier(callee) || isMemberExpression(callee);
-}
 
 const applyRuleForNamedExports = ({
   callee: { name },
