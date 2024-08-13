@@ -62,6 +62,10 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      {
+        "path": "@semantic-release/exec",
+        "prepareCmd": "npm run compile"
+      },
       "@semantic-release/npm",
       [
         "@semantic-release/git",
