@@ -1,5 +1,5 @@
 import { TSESLint } from "@typescript-eslint/utils";
-import { rule } from "../../src/rules/unnecessary-mapping-function";
+import rule from "./unnecessary-mapping-function";
 
 const ruleTester = new TSESLint.RuleTester();
 

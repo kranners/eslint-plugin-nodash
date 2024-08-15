@@ -1,8 +1,8 @@
 import { ASTUtils } from "@typescript-eslint/utils";
-import { ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
 import { createRule } from ".";
-import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
 import { CallExpression, FunctionExpression, Identifier, isValidCallee, MemberExpression } from "../lib/type-guards";
+import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
+import { ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
 
 type Context = RuleContext<"avoidMapping", []>;
 
@@ -92,7 +92,7 @@ const applyRuleForDefaultExports = ({
   })
 }
 
-export const rule = createRule({
+export default createRule({
   name: "unnecessary-mapping-function",
   meta: {
     type: 'problem',
