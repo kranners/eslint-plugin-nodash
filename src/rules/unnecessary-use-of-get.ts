@@ -2,11 +2,10 @@ import ts from "typescript";
 import { ASTUtils, TSESTree } from "@typescript-eslint/utils";
 import { createRule } from ".";
 import { CallExpression, Identifier, isLiteral, isValidCallee, MemberExpression } from "../lib/type-guards";
-import { isIdentifier } from "@typescript-eslint/utils/ast-utils";
-import { Scope } from "@typescript-eslint/scope-manager";
-
 import toPath from "lodash.topath";
+import { Scope } from "@typescript-eslint/scope-manager";
 import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
+import { isIdentifier } from "@typescript-eslint/utils/ast-utils";
 
 type CallExpressionArgument = TSESTree.CallExpressionArgument;
 
@@ -14,7 +13,7 @@ type Context = RuleContext<"avoidGet", []>;
 
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 
-const evaluateArgument = (argument: CallExpressionArgument, scope?: Scope): unknown | undefined => {
+const evaluateArgument = (argument: CallExpressionArgument, scope?: Scope | undefined): unknown | undefined => {
   if (isLiteral(argument)) {
     return argument.value;
   }
@@ -80,7 +79,7 @@ const getThirdArgumentSource = (callExpression: CallExpression, context: Context
   return context.sourceCode.getText(callExpression.arguments[2])
 }
 
-export const rule = createRule({
+export default createRule({
   name: "unnecessary-use-of-get",
   meta: {
     type: 'problem',

@@ -1,9 +1,9 @@
 {
   "name": "eslint-plugin-nodash",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "ESLint plugin for identifying unnecessary usages of Lodash",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "types": "./dist/index.d.ts",
   "engines": "node>=18",
   "keywords": [
     "eslint",
@@ -62,6 +62,10 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
+      {
+        "path": "@semantic-release/exec",
+        "prepareCmd": "npm run compile"
+      },
       "@semantic-release/npm",
       [
         "@semantic-release/git",

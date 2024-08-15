@@ -1,7 +1,7 @@
-import { rule as unnecessaryMapping } from "./rules/unnecessary-mapping-function";
-import { rule as unnecessaryGet } from "./rules/unnecessary-use-of-get";
+import unnecessaryMapping from "./rules/unnecessary-mapping-function";
+import unnecessaryGet from "./rules/unnecessary-use-of-get";
 
-const plugin = {
+export = {
   meta: {
     name: "eslint-plugin-nodash",
   },
@@ -10,6 +10,4 @@ const plugin = {
     'unnecessary-use-of-get': unnecessaryGet,
   },
 };
-
-export default plugin;
 

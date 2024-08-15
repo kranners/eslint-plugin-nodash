@@ -1,5 +1,5 @@
 import { TSESLint } from "@typescript-eslint/utils";
-import { rule } from "../../src/rules/unnecessary-use-of-get";
+import rule from "./unnecessary-use-of-get";
 
 const ruleTester = new TSESLint.RuleTester();
 

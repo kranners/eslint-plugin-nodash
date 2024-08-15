@@ -1,26 +1,27 @@
 {
+  "exclude": [
+    "dist/**",
+    "src/**/*test.ts"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
   "compilerOptions": {
-    "target": "es2021",
-    "module": "node16",
-    "moduleResolution": "node16",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "types": [
       "node",
       "jest"
     ],
-    "declarationMap": true,
-    "declaration": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
     "outDir": "./dist",
-    "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "es2016"
+    ],
+    "module": "node16",
+    "target": "es2015",
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "useUnknownInCatchVariables": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": false
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
   }
 }
