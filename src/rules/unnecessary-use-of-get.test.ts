@@ -83,6 +83,28 @@ ruleTester.run('unnecessary-use-of-get', rule, {
         const scrollTopBefore = document.body.scrollTop;
       `
     },
+    {
+      code: `
+        import { get } from 'lodash';
+        const message = rawMessage || get(error, "errors[0].message", error.message);
+      `,
+      errors: [ { messageId: 'avoidGet' } ],
+      output: `
+        import { get } from 'lodash';
+        const message = rawMessage || (error?.errors?.[0].message ?? error.message);
+      `
+    },
+    {
+      code: `
+        import _ from 'lodash';
+        const message = rawMessage || _.get(error, "errors[0].message", error.message);
+      `,
+      errors: [ { messageId: 'avoidGet' } ],
+      output: `
+        import _ from 'lodash';
+        const message = rawMessage || (error?.errors?.[0].message ?? error.message);
+      `
+    },
   ]
 })
 

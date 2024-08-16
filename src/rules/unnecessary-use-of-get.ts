@@ -1,7 +1,7 @@
 import ts from "typescript";
 import { ASTUtils, TSESTree } from "@typescript-eslint/utils";
 import { createRule } from ".";
-import { CallExpression, Identifier, isLiteral, isValidCallee, MemberExpression } from "../lib/type-guards";
+import { CallExpression, Identifier, isLiteral, isLogicalExpression, isValidCallee, MemberExpression } from "../lib/type-guards";
 import toPath from "lodash.topath";
 import { Scope } from "@typescript-eslint/scope-manager";
 import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
@@ -140,12 +140,22 @@ export default createRule({
           ts.createSourceFile(context.filename, context.sourceCode.text, ts.ScriptTarget.Latest, true),
         )
 
+        const containedInLogicalExpression = isLogicalExpression(node.parent);
+
         context.report({
           node,
           messageId: "avoidGet",
           fix(fixer) {
+            if (shouldCoalesce && containedInLogicalExpression) {
+              return fixer.replaceText(node, `(${replacementAccessExpressionText} ?? ${defaultValueSource})`);
+            }
+
             if (shouldCoalesce) {
               return fixer.replaceText(node, `${replacementAccessExpressionText} ?? ${defaultValueSource}`);
+            }
+
+            if (containedInLogicalExpression) {
+              return fixer.replaceText(node, `(${replacementAccessExpressionText})`);
             }
 
             return fixer.replaceText(node, replacementAccessExpressionText);

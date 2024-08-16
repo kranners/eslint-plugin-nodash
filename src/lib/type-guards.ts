@@ -6,6 +6,9 @@ export type MemberExpression = TSESTree.MemberExpression;
 export type CallExpression = TSESTree.CallExpression;
 export type FunctionExpression = TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
 export type Literal = TSESTree.Literal;
+export type LogicalExpression = TSESTree.LogicalExpression;
+
+export const isLogicalExpression = ASTUtils.isNodeOfType(AST_NODE_TYPES.LogicalExpression);
 
 export const isMemberExpression = ASTUtils.isNodeOfType(AST_NODE_TYPES.MemberExpression);
 
