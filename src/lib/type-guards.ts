@@ -19,9 +19,10 @@ export const isCallExpression = ASTUtils.isNodeOfType(AST_NODE_TYPES.CallExpress
 export const isImportDefaultSpecifier = ASTUtils.isNodeOfType(AST_NODE_TYPES.ImportDefaultSpecifier);
 export const isImportSpecifier = ASTUtils.isNodeOfType(AST_NODE_TYPES.ImportSpecifier);
 export const isObjectPattern = ASTUtils.isNodeOfType(AST_NODE_TYPES.ObjectPattern);
+export const isProperty = ASTUtils.isNodeOfType(AST_NODE_TYPES.Property);
 
 export const isValidCallee = (callee: Expression): callee is Identifier | MemberExpression => {
-  return ASTUtils.isIdentifier(callee) || isMemberExpression(callee);
+  return isIdentifier(callee) || isMemberExpression(callee);
 }
 
 export type CommonJSImport = TSESTree.VariableDeclaration & {

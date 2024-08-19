@@ -1,8 +1,9 @@
 import { ASTUtils } from "@typescript-eslint/utils";
 import { createRule } from ".";
-import { CallExpression, FunctionExpression, Identifier, isValidCallee, MemberExpression } from "../lib/type-guards";
-import { RuleContext } from "@typescript-eslint/utils/ts-eslint";
-import { ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
+import { CallExpression, FunctionExpression, Identifier, isImportDeclaration, isImportSpecifier, isImportStatement, isMemberExpression, isObjectPattern, isProperty, isValidCallee, MemberExpression } from "../lib/type-guards";
+import { RuleContext, SourceCode } from "@typescript-eslint/utils/ts-eslint";
+import { isIdentifier, ReferenceTracker } from "@typescript-eslint/utils/ast-utils";
+import { getMemberExpressionAncestor, isImportStatementLodash, isNodeFromImportStatement, isNodeFromLodash } from "lib/context-analysis";
 
 type Context = RuleContext<"avoidMapping", []>;
 
@@ -33,17 +34,6 @@ const applyRuleForNamedExports = ({
   const hits = Array.from(tracker.iterateEsmReferences(isNamedFunctionLodash));
 
   hits.forEach(() => {
-    context.report({
-      node,
-      messageId: "avoidMapping",
-      data: { name },
-      fix(fixer) {
-        return fixer.replaceTextRange(
-          [node.range[0], callback.range[0]],
-          `${array.name}.${name}(`
-        )
-      }
-    });
   })
 }
 
@@ -92,6 +82,52 @@ const applyRuleForDefaultExports = ({
   })
 }
 
+const getES6EquivalentMethodFromCallee = (ast: SourceCode.Program, callee: Identifier | MemberExpression): string | undefined => {
+  if (isMemberExpression(callee)) {
+    if (isIdentifier(callee.property)) {
+      return callee.property.name;
+    }
+
+    return undefined;
+  }
+
+  // If callee is not a MemberExpression it may have been renamed during its import
+  const imports = ast.body.filter(isImportStatement).filter(isImportStatementLodash);
+
+  const calleeImport = imports.find((statement) => isNodeFromImportStatement(statement, callee));
+  if (calleeImport === undefined) {
+    return undefined;
+  }
+
+  // ESM
+  if (isImportDeclaration(calleeImport)) {
+    const specifier = calleeImport.specifiers.find((specifier) => {
+      return specifier.local.name === callee.name;
+    });
+    if (!isImportSpecifier(specifier)) {
+      return undefined;
+    }
+
+    return specifier.imported.name;
+  }
+
+  // CJS
+  const [declaration] = calleeImport.declarations;
+  if (isObjectPattern(declaration.id)){
+    const calleeProperty = declaration.id.properties.find((property) => {
+      if (isIdentifier(property.value)) {
+        return property.value.name === callee.name;
+      }
+    });
+
+    if (!isProperty(calleeProperty) || !isIdentifier(calleeProperty.key)) {
+      return undefined;
+    }
+
+    return calleeProperty.key.name;
+  }
+}
+
 export default createRule({
   name: "unnecessary-mapping-function",
   meta: {
@@ -116,11 +152,7 @@ export default createRule({
         }
 
         const [array, callback] = node.arguments;
-
-        if (
-          !ASTUtils.isIdentifier(array) ||
-          !ASTUtils.isFunction(callback)
-        ) {
+        if (!ASTUtils.isIdentifier(array) || !ASTUtils.isFunction(callback)) {
           return;
         }
 
@@ -128,33 +160,34 @@ export default createRule({
         if (!isValidCallee(callee)) {
           return
         }
+        
+        const { ast } = context.sourceCode;
+        if (!isNodeFromLodash(ast, callee)) {
+          return;
+        }
+
+        const methodName = getES6EquivalentMethodFromCallee(ast, callee);
+        if (methodName === undefined) {
+          return;
+        }
 
         const scope = context.sourceCode.getScope(context.sourceCode.ast);
         const arrayStaticValue = ASTUtils.getStaticValue(array, scope);
         if (!Array.isArray(arrayStaticValue?.value)) {
           return;
         }
-        const tracker = new ASTUtils.ReferenceTracker(scope);
 
-        if (ASTUtils.isIdentifier(callee)) {
-          return applyRuleForNamedExports({
-            callee,
-            context,
-            tracker,
-            node,
-            array,
-            callback
-          });
-        }
-
-        return applyRuleForDefaultExports({
-          callee,
-          context,
-          tracker,
-          node,
-          array,
-          callback
-        });
+    context.report({
+      node,
+      messageId: "avoidMapping",
+      data: { name },
+      fix(fixer) {
+        return fixer.replaceTextRange(
+          [node.range[0], callback.range[0]],
+          `${array.name}.${name}(`
+        )
+      }
+    });
       }
     }
   },

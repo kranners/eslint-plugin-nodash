@@ -2,7 +2,7 @@ import { isIdentifier } from "@typescript-eslint/utils/ast-utils";
 import { SourceCode } from "@typescript-eslint/utils/ts-eslint";
 import { Identifier, ImportStatement, isImportDeclaration, isImportStatement, isLiteral, isMemberExpression, isObjectPattern, MemberExpression } from "lib/type-guards";
 
-const isImportStatementLodash = (statement: ImportStatement): boolean => {
+export const isImportStatementLodash = (statement: ImportStatement): boolean => {
   if (isImportDeclaration(statement)) {
     return statement.source.value === "lodash";
   }
@@ -20,7 +20,7 @@ const isImportStatementLodash = (statement: ImportStatement): boolean => {
   return required.value === "lodash";
 }
 
-const getMemberExpressionAncestor = (expression: MemberExpression): Identifier | undefined => {
+export const getMemberExpressionAncestor = (expression: MemberExpression): Identifier | undefined => {
   if (isIdentifier(expression.object)) {
     return expression.object;
   }
@@ -32,7 +32,7 @@ const getMemberExpressionAncestor = (expression: MemberExpression): Identifier |
   return undefined;
 }
 
-const isNodeFromImportStatement = (statement: ImportStatement, node: Identifier | MemberExpression): boolean => {
+export const isNodeFromImportStatement = (statement: ImportStatement, node: Identifier | MemberExpression): boolean => {
   const target: Identifier | undefined = isIdentifier(node) ? node : getMemberExpressionAncestor(node);
 
   if (target === undefined) {
